@@ -3,16 +3,59 @@ Python implementation of Terence Tao's paper "Eigenvectors from eigenvalues".
 
 ## Import Packages
 ```python
+import time
 import numpy as np
 import pandas as pd
+from scipy.linalg import eigh
 ```
 
 ## Eigenvalue
 
+### Numpy Built-In Function
+```python
+%%time
+A = np.array([[1, 1, -1], [1, 3, 1], [-1, 1, 3]])
+eigenvalues_A, eigenvectors_A = np.linalg.eig(A)
+eigenvalues_A = [round(float(x), 4) for x in eigenvalues_A]
+print("Eigenvalues of matrix A: \n{}".format(eigenvalues_A))
+print("Eigenvalues of matrix A: \n{}".format(eigenvectors_A))
+```
+```console
+Eigenvalues of matrix A: 
+[-0.0, 3.0, 4.0]
+Eigenvalues of matrix A: 
+[[-8.16496581e-01  5.77350269e-01 -3.14018492e-16]
+ [ 4.08248290e-01  5.77350269e-01  7.07106781e-01]
+ [-4.08248290e-01 -5.77350269e-01  7.07106781e-01]]
+CPU times: user 367 µs, sys: 886 µs, total: 1.25 ms
+Wall time: 1.32 ms
+```
+
+### Scipy Built-In Function
+```python
+%%time
+A = np.array([[1, 1, -1], [1, 3, 1], [-1, 1, 3]])
+eig_val, eig_vec = eigh(A)
+eig_val = eig_val.tolist()
+eig_val = [round(x, 4) for x in eig_val]
+print("Eigenvalues of matrix A: \n{}".format(eig_val))
+print("Eigenvectors of matrix A: \n{}".format(eig_vec))
+```
+```console
+Eigenvalues of matrix A: 
+[0.0, 3.0, 4.0]
+Eigenvectors of matrix A: 
+[[ 0.81649658 -0.57735027  0.        ]
+ [-0.40824829 -0.57735027  0.70710678]
+ [ 0.40824829  0.57735027  0.70710678]]
+CPU times: user 772 µs, sys: 0 ns, total: 772 µs
+Wall time: 911 µs
+```
+
 ### Lanczos Method
 Reference from [Christian Clason](https://scicomp.stackexchange.com/questions/23536/quality-of-eigenvalue-approximation-in-lanczos-method).
 ```python
-def lanczos_method(A, v, m=100):
+def lanczos_method(A, m=100):
     """
     Reference from https://en.wikipedia.org/wiki/Lanczos_algorithm
 
@@ -25,6 +68,7 @@ def lanczos_method(A, v, m=100):
       V: n*m matrix with orthonormal columns (array-like)
     """
     # Initialize parameters
+    v = np.random.rand(A.shape[1])
     n = len(v)
     if m >= n: 
       m = n
@@ -49,42 +93,35 @@ def lanczos_method(A, v, m=100):
     w = w - alfa*v - beta*vo
     T[m - 1, m - 1] = np.dot(w, v)
     V[m - 1] = w / np.sqrt(np.dot(w, w)) 
-    return T, V
+
+    eigenvalues_T, eigenvectors_T = np.linalg.eig(T)
+    eig_vec = V @ A
+
+    eig_val = []
+    for i in range(n):
+        val = (np.dot(eig_vec[:, i].conj().T, np.dot(A, eig_vec[:, i]))) / (np.dot(eig_vec[:, i].conj().T, eig_vec[:, i]))
+        eig_val.append(val)
+
+    return eig_val, eig_vec
 ```
 
 Test on a matrix.
 ```python
 A = np.array([[1, 1, -1], [1, 3, 1], [-1, 1, 3]])
-v = np.random.rand(3, )
-T, V = lanczos_method(A, v)
-
-print(T)
-print(V)
+eig_val, eig_vec = lanczos_method(A)
+print("Eigenvalues of matrix A: \n{}".format(eig_val))
+print("Eigenvectors of matrix A: \n{}".format(eig_vec))
 ```
 ```console
-[[1.49296872 1.74725883 0.        ]
- [1.74725883 2.64273504 0.59326054]
- [0.         0.59326054 0.24264706]]
-[[-0.29656446  0.94276987  0.15242863]
- [ 0.00183568 -0.56649299  0.82406452]
- [-0.97292295 -0.2120978   0.09184473]]
+Eigenvalues of matrix A: 
+[0.730941255645759, 2.56483114861561, 3.0094993260146365]
+Eigenvectors of matrix A: 
+[[ 1.1153669   2.42871868  0.19798489]
+ [-0.8453261   1.61596474  3.30661693]
+ [ 0.01815338 -0.14486253 -0.18116928]]
+CPU times: user 1.85 ms, sys: 0 ns, total: 1.85 ms
+Wall time: 1.44 ms
 ```
-Compare to `np.linalg.eig()` numpy built-in function.
-```python
-eigenvalues_A, _ = np.linalg.eig(A)
-eigenvalues_T, _ = np.linalg.eig(T)
-
-eigenvalues_A = [round(float(x), 4) for x in eigenvalues_A]
-eigenvalues_T = [round(float(x), 4) for x in eigenvalues_T]
-
-print("Eigenvalues of matrix A: {}".format(eigenvalues_A))
-print("Eigenvalues of matrix T: {}".format(eigenvalues_T))
-```
-```console
-Eigenvalues of matrix A: [-0.0, 3.0, 4.0]
-Eigenvalues of matrix T: [3.9698, 0.55, -0.1415]
-```
-
 
 ### Power Method
 Given a diagonalizable matrix A, Power Method will produce a number, which is the greatest (in absolute value) eigenvalue of A.
@@ -112,18 +149,25 @@ def power_method(A, m=100):
     # Rayleigh quotient
     eig_val = (np.dot(v_old.conj().T, np.dot(A, v_old))) / (np.dot(v_old.conj().T, v_old))
 
-    return v_old, eig_val
+    return eig_val, v_old
+```
 
-eig_vec, eig_val = power_method(A)
+Test on Power Method.
+```
+%%time
+eig_val, eig_vec = power_method(A)
 eig_vec = [round(x, 4) for x in eig_vec.tolist()]
-print(eig_vec)
-print(eig_val)
+print("Eigenvalues of matrix A: \n{}".format(eig_val))
+print("Eigenvectors of matrix A: \n{}".format(eig_vec))
 ```
 ```console
+Eigenvalues of matrix A: 
+3.999999999999999
+Eigenvectors of matrix A: 
 [0.0, 0.7071, 0.7071]
-3.9999999999999996
+CPU times: user 712 µs, sys: 1.94 ms, total: 2.65 ms
+Wall time: 2.83 ms
 ```
-
 
 ## Paper
 [Eigenvectors from eigenvalues](https://arxiv.org/pdf/1908.03795.pdf)
