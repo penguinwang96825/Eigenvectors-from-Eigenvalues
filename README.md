@@ -1,5 +1,5 @@
 # Eigenvectors_from_Eigenvalues
-Python implementation of the paper "Eigenvectors from eigenvalues".
+Python implementation of Terence Tao's paper "Eigenvectors from eigenvalues".
 
 ## Import Packages
 ```python
