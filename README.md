@@ -87,26 +87,36 @@ Eigenvalues of matrix T: [3.9698, 0.55, -0.1415]
 
 
 ### Power Method
+Given a diagonalizable matrix A, Power Method will produce a number, which is the greatest (in absolute value) eigenvalue of A.
 ```python
-def power_method(A, start, max_iter=100):
+def power_method(A, m=100):
     """
-    Parameters:
-      A: matrix (array-like)
-      start: initial vector
-      max_iter: int
+    Prameters:
+        A: n*n matrix (array-like)
+        m: iterations (int)
+    Return:
+        v_old: Eigenvector (array-like)
     """
-    result = start
-    for i in range(max_iter):
-        result = A*result
-        result = result / np.linalg.norm(result)
-    return result
-    
-result = power_method(A, start=np.random.rand(3, ), max_iter=100); result
+    v_old = np.random.rand(A.shape[1])
+
+    for _ in range(m):
+        # Calculate the matrix-by-vector product A*v_old.
+        v_new = np.dot(A, v_old)
+
+        # Calculate the norm.
+        v_new_norm = np.linalg.norm(v_new)
+
+        # Re-normalize the vector.
+        v_old = v_new / v_new_norm
+
+    return v_old
+
+eigvec = power_method(A)
+eigvec = [round(x, 4) for x in eigvec.tolist()]
+print(eigvec)
 ```
 ```console
-array([[5.56688351e-49, 1.18137569e-48, 1.53922494e-48],
-       [5.56688351e-49, 6.08854474e-01, 1.53922494e-48],
-       [5.56688351e-49, 1.18137569e-48, 7.93281935e-01]])
+[0.0, 0.7071, 0.7071]
 ```
 
 
