@@ -109,14 +109,19 @@ def power_method(A, m=100):
         # Re-normalize the vector.
         v_old = v_new / v_new_norm
 
-    return v_old
+    # Rayleigh quotient
+    eig_val = (np.dot(v_old.conj().T, np.dot(A, v_old))) / (np.dot(v_old.conj().T, v_old))
 
-eigvec = power_method(A)
-eigvec = [round(x, 4) for x in eigvec.tolist()]
-print(eigvec)
+    return v_old, eig_val
+
+eig_vec, eig_val = power_method(A)
+eig_vec = [round(x, 4) for x in eig_vec.tolist()]
+print(eig_vec)
+print(eig_val)
 ```
 ```console
 [0.0, 0.7071, 0.7071]
+3.9999999999999996
 ```
 
 
