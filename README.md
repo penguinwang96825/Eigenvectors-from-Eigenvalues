@@ -1,5 +1,8 @@
 # Eigenvectors_from_Eigenvalues
-Python implementation of Terence Tao's paper "Eigenvectors from eigenvalues".
+Python implementation of Terence Tao's paper "Eigenvectors from eigenvalues". 
+
+## Introduction
+Detailed process is in Terence Tao's [website](https://terrytao.wordpress.com/2019/08/13/eigenvectors-from-eigenvalues/). First, I will dig into some basic computation for eigenvalues and eigenvectors using different approaches. Second, I will try my best to implement eigenvector-eigenvalue identity in python.
 
 ## Import Packages
 ```python
@@ -9,7 +12,7 @@ import pandas as pd
 from scipy.linalg import eigh
 ```
 
-## Computation of Eigenvalues and Eigenvectors
+## Numerical Computation
 
 ### Numpy Built-In Function
 ```python
@@ -170,4 +173,4 @@ Wall time: 2.83 ms
 ```
 
 ## Paper
-[Eigenvectors from eigenvalues](https://arxiv.org/pdf/1908.03795.pdf)
+Terence Tao, Eigenvectors from eigenvalues: a survey of a basic identity in linear algebra. [paper](https://arxiv.org/pdf/1908.03795.pdf)
