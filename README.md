@@ -153,7 +153,7 @@ def power_method(A, m=100):
 ```
 
 Test on Power Method.
-```
+```python
 %%time
 eig_val, eig_vec = power_method(A)
 eig_vec = [round(x, 4) for x in eig_vec.tolist()]
