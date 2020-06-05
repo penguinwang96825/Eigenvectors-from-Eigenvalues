@@ -102,7 +102,8 @@ def lanczos_method(A, m=100):
 
     eig_val = []
     for i in range(n):
-        val = (np.dot(eig_vec[:, i].conj().T, np.dot(A, eig_vec[:, i]))) / (np.dot(eig_vec[:, i].conj().T, eig_vec[:, i]))
+        col = eig_vec[:, i]
+        val = (np.dot(col.conj().T, np.dot(A, col))) / (np.dot(col.conj().T, col))
         eig_val.append(val)
 
     return eig_val, eig_vec
