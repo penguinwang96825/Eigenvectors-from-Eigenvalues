@@ -10,7 +10,7 @@ import pandas as pd
 ## Eigenvalue
 
 ### Lanczos Method
-Reference from https://scicomp.stackexchange.com/questions/23536/quality-of-eigenvalue-approximation-in-lanczos-method
+Reference from [Christian Clason](https://scicomp.stackexchange.com/questions/23536/quality-of-eigenvalue-approximation-in-lanczos-method).
 ```python
 def lanczos_method(A, v, m=100):
     """
