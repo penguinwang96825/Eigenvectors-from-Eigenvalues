@@ -9,7 +9,7 @@ import pandas as pd
 from scipy.linalg import eigh
 ```
 
-## Eigenvalue
+## Computation of Eigenvalues and Eigenvectors
 
 ### Numpy Built-In Function
 ```python
