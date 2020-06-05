@@ -174,6 +174,7 @@ Wall time: 2.83 ms
 ```
 
 ## Eigenvector-eigenvalue Identity Theorem
+Reference from [fansong](https://dearxxj.github.io/post/7/).
 ```python
 def eigenvectors_from_eigenvalues(A):
     """
@@ -215,4 +216,4 @@ array([[0.66666667, 0.33333333, 0.        ],
 ```
 
 ## Paper
-Terence Tao, Eigenvectors from eigenvalues: a survey of a basic identity in linear algebra. [paper](https://arxiv.org/pdf/1908.03795.pdf)
+Terence Tao, Eigenvectors from eigenvalues: a survey of a basic identity in linear algebra. [[paper](https://arxiv.org/pdf/1908.03795.pdf)]
