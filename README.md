@@ -173,5 +173,46 @@ CPU times: user 712 µs, sys: 1.94 ms, total: 2.65 ms
 Wall time: 2.83 ms
 ```
 
+## Eigenvector-eigenvalue Identity Theorem
+```python
+def eigenvectors_from_eigenvalues(A):
+    """
+    Implementation of Eigenvector-eigenvalue Identity Theorem
+
+    Parameters:
+        A: n*n Hermitian matrix (array-like)
+    Return: 
+        eig_vec_A: Eigenvectors of matrix A
+    """
+    n = A.shape[0]
+    # Produce eig_val_A by scipy.linalg.eigh() function
+    eig_val_A, _ = eigh(A)
+    eig_vec_A = np.zeros((n, n))
+    for k in range(n):
+        # Remove the k-th row
+        M = np.delete(A, k, axis=0)
+        # Remove the k-th column
+        M = np.delete(M, k, axis=1)
+        # Produce eig_val_M by scipy.linalg.eigh() function
+        eig_val_M, _ = eigh(M)
+
+        nominator = [np.prod(eig_val_A[i] - eig_val_M) for i in range(n)]
+        denominator = [np.prod(np.delete(eig_val_A[i] - eig_val_A, i)) for i in range(n)]
+
+        eig_vec_A[k, :] = np.array(nominator) / np.array(denominator)
+    return eig_vec_A
+```
+Test on matrix A.
+```python
+A = np.array([[1, 1, -1], [1, 3, 1], [-1, 1, 3]])
+eig_vec_A = eigenvectors_from_eigenvalues(A)
+print(eig_vec_A)
+```
+```console
+array([[0.66666667, 0.33333333, 0.        ],
+       [0.16666667, 0.33333333, 0.5       ],
+       [0.16666667, 0.33333333, 0.5       ]])
+```
+
 ## Paper
 Terence Tao, Eigenvectors from eigenvalues: a survey of a basic identity in linear algebra. [paper](https://arxiv.org/pdf/1908.03795.pdf)
