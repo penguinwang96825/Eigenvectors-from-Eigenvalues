@@ -176,19 +176,22 @@ Wall time: 2.83 ms
 ## Eigenvector-eigenvalue Identity Theorem
 Reference from [fansong](https://dearxxj.github.io/post/7/).
 ```python
-def eigenvectors_from_eigenvalues(A):
+def eigenvectors_from_eigenvalues(A, eig_val_A=None):
     """
     Implementation of Eigenvector-eigenvalue Identity Theorem
 
     Parameters:
-        A: n*n Hermitian matrix (array-like)
+        A: (n, n) Hermitian matrix (array-like)
+        eig_val_A: (n, ) vector (float ndarray)
     Return: 
         eig_vec_A: Eigenvectors of matrix A
     """
     n = A.shape[0]
     # Produce eig_val_A by scipy.linalg.eigh() function
-    eig_val_A, _ = eigh(A)
+    if eig_val_A is None:
+        eig_val_A, _ = eigh(A)
     eig_vec_A = np.zeros((n, n))
+    start = time.time()
     for k in range(n):
         # Remove the k-th row
         M = np.delete(A, k, axis=0)
@@ -201,6 +204,8 @@ def eigenvectors_from_eigenvalues(A):
         denominator = [np.prod(np.delete(eig_val_A[i] - eig_val_A, i)) for i in range(n)]
 
         eig_vec_A[k, :] = np.array(nominator) / np.array(denominator)
+    elapse_time = time.time() - start
+    print("It takes {}s to compute eigenvectors.".format(elapse_time))
     return eig_vec_A
 ```
 Test on matrix A.
