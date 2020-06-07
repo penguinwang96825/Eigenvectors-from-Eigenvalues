@@ -205,7 +205,7 @@ def eigenvectors_from_eigenvalues(A, eig_val_A=None):
 
         eig_vec_A[k, :] = np.array(nominator) / np.array(denominator)
     elapse_time = time.time() - start
-    print("It takes {}s to compute eigenvectors.".format(elapse_time))
+    print("It takes {:.8f}s to compute eigenvectors using Eigenvector-eigenvalue Identity.".format(elapse_time))
     return eig_vec_A
 ```
 Test on matrix A.
@@ -213,11 +213,22 @@ Test on matrix A.
 A = np.array([[1, 1, -1], [1, 3, 1], [-1, 1, 3]])
 eig_vec_A = eigenvectors_from_eigenvalues(A)
 print(eig_vec_A)
+
+start = time.time()
+eig_val_A, eig_vec_A = eigh(A); eig_vec_A
+print("\nIt takes {:.8f}s to compute eigenvectors using scipy.linalg.eigh() function.".format(time.time()-start))
+print(eig_vec_A)
 ```
 ```console
-array([[0.66666667, 0.33333333, 0.        ],
-       [0.16666667, 0.33333333, 0.5       ],
-       [0.16666667, 0.33333333, 0.5       ]])
+It takes 0.00070190s to compute eigenvectors using Eigenvector-eigenvalue Identity.
+[[0.66666667 0.33333333 0.        ]
+ [0.16666667 0.33333333 0.5       ]
+ [0.16666667 0.33333333 0.5       ]]
+
+It takes 0.00016832s to compute eigenvectors using scipy.linalg.eigh() function.
+[[ 0.81649658 -0.57735027  0.        ]
+ [-0.40824829 -0.57735027  0.70710678]
+ [ 0.40824829  0.57735027  0.70710678]]
 ```
 
 ## Paper
