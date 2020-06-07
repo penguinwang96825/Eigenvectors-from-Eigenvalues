@@ -51,7 +51,7 @@ def eigenvectors_from_eigenvalues(A, eig_val_A=None):
     print("It takes {:.8f}s to compute eigenvectors using Eigenvector-eigenvalue Identity.".format(elapse_time))
     return eig_vec_A
 ```
-Test on matrix A.
+Test `eigenvectors_from_eigenvalues()` on matrix A.
 ```python
 A = np.array([[1, 1, -1], [1, 3, 1], [-1, 1, 3]])
 eig_vec_A = eigenvectors_from_eigenvalues(A)
