@@ -230,6 +230,13 @@ It takes 0.00016832s to compute eigenvectors using scipy.linalg.eigh() function.
  [-0.40824829 -0.57735027  0.70710678]
  [ 0.40824829  0.57735027  0.70710678]]
 ```
+### Conclusion
+1. The eigenvector-eigenvalue identity only yields information about the magnitude of the components of a given eigenvector, but does not directly reveal the phase of these components. Otherwise, the eigenvector-eigenvalue identity may be more computationally feasible only if one has an application that requires only the component magnitudes.
+2. It would be a computationally intensive task in general to compute all *n-1* eigenvalues of each of the *n* minors matrices.
+3. An additional method would then be needed to calculate the signs of these components of eigenvectors.
+4. It has not been seen that the eigenvector-eigenvalue identity has better speed at computing eigenvectors compared to `scipy.linalg.eigh()` function.
 
 ## Paper
-Terence Tao, Eigenvectors from eigenvalues: a survey of a basic identity in linear algebra. [[paper](https://arxiv.org/pdf/1908.03795.pdf)]
+1. Terence Tao, Eigenvectors from eigenvalues: a survey of a basic identity in linear algebra. [[paper](https://arxiv.org/pdf/1908.03795.pdf)]
+2. Asok K. Mukherjee and Kali Kinkar Datta. Two new graph-theoretical methods for generation of eigenvectors of chemical graphs. [[paper](https://www.ias.ac.in/article/fulltext/jcsc/101/06/0499-0517)]
+3. Peter B Denton, Stephen J Parke, and Xining Zhang. Eigenvalues: the Rosetta Stone for Neutrino Oscillations in Matter. [[paper](https://arxiv.org/pdf/1907.02534.pdf)]
